@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   app:
+    container_name: docker-blue-ocean-demo-php-app
     restart: always
     environment:
       ENABLE_PHP_DEV_CONFIG: 1
@@ -18,6 +19,8 @@ services:
     networks:
       - traefik
       - default
+    expose:
+      - 80
 
   db:
     restart: always

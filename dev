@@ -9,11 +9,6 @@ allArgs="${@}";
 allArgsExceptFirst="${@:2}";
 secondArg="${2}";
 
-# Ensure .env.local exists
-if [[ ! -f ".env.local" ]]; then
-    touch .env.local;
-fi
-
 # Source all of our executable files — these should contain functions that can be run
 for f in $(find devSrc -name '*.sh'); do
     chmod +x ${f};

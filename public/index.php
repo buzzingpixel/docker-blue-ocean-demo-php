@@ -7,7 +7,7 @@ use Buzzingpixel\DockerBlueOceanDemoPhpApp\Healthcheck\GetHealthCheckAction;
 use Buzzingpixel\DockerBlueOceanDemoPhpApp\HomePage\GeHomePageAction;
 use Slim\Factory\AppFactory;
 
-require __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $container = new Container();
 

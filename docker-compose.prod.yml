@@ -1,23 +1,6 @@
 version: '3.7'
 
 services:
-  utility:
-    deploy:
-      rollback_config:
-        order: start-first
-      update_config:
-        order: start-first
-    env_file:
-      - .env
-      - .env.local
-    image: ubuntu:18.04
-    restart: always
-    container_name: docker-blue-ocean-demo-php-utility
-    volumes:
-      - .:/var/www
-      - storage-volume:/storage-volume
-    command: bash -c "chmod +x /var/www/docker/utility/prod.sh && /var/www/docker/utility/prod.sh"
-
   app:
     deploy:
       rollback_config:

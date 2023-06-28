@@ -131,6 +131,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Copy the application into the container
 COPY . /var/www
 
+# Install composer dependencies
+RUN composer install --no-interaction --no-ansi --no-progress --optimize-autoloader --no-dev
+
 # Container configuration
 COPY docker/application/cont-init.d /etc/cont-init.d/
 COPY docker/application/services.d /etc/services.d/
