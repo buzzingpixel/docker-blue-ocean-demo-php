@@ -23,6 +23,7 @@ services:
       - 80
 
   db:
+    container_name: docker-blue-ocean-demo-php-db
     restart: always
     ports:
       - "32446:3306"

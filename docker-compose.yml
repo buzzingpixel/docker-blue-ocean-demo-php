@@ -9,7 +9,6 @@ services:
       - default
 
   db:
-    container_name: docker-blue-ocean-demo-php-db
     image: ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-db
     environment:
       HOSTNAME: docker-blue-ocean-demo-php-db
