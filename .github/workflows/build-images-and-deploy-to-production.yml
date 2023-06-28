@@ -39,3 +39,45 @@ jobs:
           --tag ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-db
           --push
           .
+
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Copy Files
+        uses: appleboy/scp-action@master
+        with:
+          username: ${{ secrets.PROD_DEPLOY_SSH_USER }}
+          host: ${{ secrets.PROD_DEPLOY_SSH_HOST }}
+          key: ${{ secrets.PROD_DEPLOY_SSH_PRIVATE_KEY }}
+          source: "docker-compose.prod.yml, docker-compose.yml"
+          target: "/root/docker-blue-ocean-demo-php"
+
+      - name: Log in to production server pull images, and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.PROD_DEPLOY_SSH_USER }}
+          host: ${{ secrets.PROD_DEPLOY_SSH_HOST }}
+          key: ${{ secrets.PROD_DEPLOY_SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/docker-blue-ocean-demo-php;
+
+            # Log in to github docker registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin;
+
+            # Pull Images
+            docker pull ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-app;
+            docker pull ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-db;
+
+            # Deploy new images
+            docker stack deploy \
+              --compose-file docker-compose.yml \
+              --compose-file docker-compose.prod.yml \
+              --prune \
+              --with-registry-auth \
+              --resolve-image always \
+              docker-blue-ocean-demo-php;
