@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  utility:
+    deploy:
+      rollback_config:
+        order: start-first
+      update_config:
+        order: start-first
+    env_file:
+      - .env
+      - .env.local
+    image: ubuntu:18.04
+    restart: always
+    container_name: docker-blue-ocean-demo-php-utility
+    volumes:
+      - .:/var/www
+      - storage-volume:/storage-volume
+    command: bash -c "chmod +x /var/www/docker/utility/prod.sh && /var/www/docker/utility/prod.sh"
+
+  app:
+    deploy:
+      rollback_config:
+        order: start-first
+      update_config:
+        order: start-first
+      labels:
+        ## Traefik config ##
+        - traefik.enable=true
+        - traefik.http.services.docker_blue_ocean_demo_prod.loadbalancer.server.port=80
+
+        - traefik.http.routers.docker_blue_ocean_demo_prod.entrypoints=web
+        - traefik.http.routers.docker_blue_ocean_demo_prod.rule=Host(`docker-blue-ocean-demo-php.buzzingpixel.com`)
+    volumes:
+      - storage-volume:/var/www/system/user/cache
+    networks:
+      - traefik
+      - default
+
+  db:
+    deploy:
+      rollback_config:
+        order: start-first
+      update_config:
+        order: start-first
+
+networks:
+  traefik:
+    name: traefik
+    external: true
+
+volumes:
+  storage-volume:
+

@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  app:
+    restart: always
+    environment:
+      ENABLE_PHP_DEV_CONFIG: 1
+    volumes:
+      - .:/var/www:delegated
+    labels:
+      ## Traefik config ##
+      - traefik.enable=true
+      - traefik.docker.network=traefik-dev_default
+
+      # Local Traefik config
+      - traefik.http.routers.teg_local.entrypoints=web
+      - traefik.http.routers.teg_local.rule=Host(`docker-blue-ocean-demo-php.localtest.me`)
+    networks:
+      - traefik
+      - default
+
+  db:
+    restart: always
+    ports:
+      - "32446:3306"
+
+networks:
+  traefik:
+    name: traefik-dev_default
+    external: true

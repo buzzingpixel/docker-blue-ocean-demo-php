@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: docker-blue-ocean-demo-php-app
+    image: ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-app
+    environment:
+      HOSTNAME: docker-blue-ocean-demo-php-app
+    expose:
+      - 80
+    networks:
+      - default
+
+  db:
+    image: ghcr.io/buzzingpixel/docker-blue-ocean-demo-php-db
+    container_name: docker-blue-ocean-demo-php-db
+    environment:
+      HOSTNAME: docker-blue-ocean-demo-php-db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: site
+      MYSQL_USER: site
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db-volume:/var/lib/mysql
+    networks:
+      default:
+        aliases:
+          - docker-blue-ocean-demo-php-db
+
+volumes:
+  db-volume:
