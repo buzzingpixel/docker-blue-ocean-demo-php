@@ -8,7 +8,7 @@ use BuzzingPixel\Templating\TemplateEngineFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-readonly class GeHomePageAction
+readonly class GetHomePageAction
 {
     public function __construct(
         private TemplateEngineFactory $templateEngineFactory
@@ -24,7 +24,7 @@ readonly class GeHomePageAction
                 ->templatePath(__DIR__ . '/HomePage.phtml')
                 ->vars([
                     'pageTitle' => 'Docker Blue Ocean Demo for PHP',
-                    'headline' => 'Hello World',
+                    'headline' => 'Hello Nashville PHP',
                 ])
                 ->render()
         );

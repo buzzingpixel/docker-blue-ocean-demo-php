@@ -4,6 +4,8 @@ services:
   app:
     container_name: docker-blue-ocean-demo-php-app
     restart: always
+    ports:
+      - "5001:80"
     environment:
       ENABLE_PHP_DEV_CONFIG: 1
     volumes:
